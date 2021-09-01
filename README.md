@@ -1,2 +1,5 @@
 # accumulate-rust-client
-Small rust client for Accumulate JSON RPC 
+
+Small JSON RPC client in Rust for Accumulate blockchain https://github.com/AccumulateNetwork/accumulated.
+
+
