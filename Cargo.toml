@@ -2,36 +2,24 @@
 name = "accumulate-api"
 version = "0.1.0"
 authors = ["Sergey Bushnyak <sergey.bushnyak@sigrlami.eu>"]
-edition = "2018"
+edition = "2021"
+description = "Lower-level API for interfacing with the Accumulate Protocol via JSON-RPC"
+categories = ["asynchronous", "api-bindings", "network-programming"]
+keywords = ["accumulate", "api", "jsonrpc", "rpc", "async"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-log = "0.4"
-# FIXME: Currently a lot of jsonrpc-* crates depend on entire `futures` being
-# re-exported but it's not strictly required for this crate. Either adapt the
-# remaining crates or settle for this re-export to be a single, common dependency
-futures = { version = "0.3", optional = true }
-futures-util = { version = "0.3", default-features = false, features = ["std"] }
-futures-executor = { version = "0.3", optional = true }
-serde = "1.0"
-serde_json = "1.0"
-serde_derive = "1.0"
-jsonrpc-client-core = "0.5.0"
-
-[dependencies.serde]
-version = "1.0"
-features = ["derive"]
-optional = true
+async-trait = "0.1.77"
+log = "0.4.17"
+reqwest = { version = "0.11.12", features = ["json", "gzip"], default-features = false }
+thiserror = "1.0"
+serde = {version = "1.0.195", features=['derive']}
+serde_json = "1.0.111"
 
 [dev-dependencies]
-futures = "0.1.25"
 failure = "0.1.5"
 
 [dev-dependencies.autorand]
 version = "0.2.2"
 features = ["json", "json-value-always-null", "limited-integers"]
-
-[features]
-default = ["futures-executor", "futures"]
-arbitrary_precision = ["serde_json/arbitrary_precision"]
