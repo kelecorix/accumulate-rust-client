@@ -1,6 +1,15 @@
-# accumulate-rust-client
+# JSON-RPC client for Accumulate
 
-Small JSON RPC client in Rust for Accumulate blockchain https://github.com/AccumulateNetwork/accumulated.
+Full JSON RPC client in Rust for Accumulate blockchain https://github.com/AccumulateNetwork/accumulate
+
+## Structure
+
+- `types` - module that contains types needed to work with Accumulate API
+- `methods` - module that contains exact methods according to API definition
+- `account` - auxilarry functions to work with protocol, wallet derivation, payloads, etc.
+- `encoding` - module that includes methods need for Accumulate specific encoding
+- `signing` - module that includes methods needed for Accumulate specific signing (ED25519, RCD, multihash, etc)
+
 
 ## Contributions
 
@@ -8,6 +17,4 @@ The Library developed by Kelecorix, Inc. If you're an active user or find it use
 
 - BTC: 39oVXpsgsyW8ZgzsnX3sV7HLdtXWfT96qN
 - ETH: 0x9cDBA6bb44772259B3A3fb89cf233A147a720f34
-- FCT: FA38cwer93mmPw1HxjScLmK1yF9iJTu5P87T2vdkbuLovm2YXyss
-
-
+- ACME: acc://12d3ab9ed87ab6b8755163d53ba475b2d7976b1e14b70f2a/acme
