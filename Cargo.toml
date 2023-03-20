@@ -9,17 +9,24 @@ keywords = ["accumulate", "api", "jsonrpc", "rpc", "async"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[bin]]
+name = "app"
+path = "src/main.rs"
+
+[lib]
+name = "accumulate_api"
+path = "src/lib.rs"
+
 [dependencies]
 async-trait = "0.1.77"
 log = "0.4.17"
-reqwest = { version = "0.11.12", features = ["json", "gzip"], default-features = false }
+reqwest = { version = "0.11.12", features = ["default-tls", "json"], default-features = false }
 thiserror = "1.0"
 serde = {version = "1.0.195", features=['derive']}
 serde_json = "1.0.111"
+tokio = {version = "1", features = ["full"]}
+env_logger = "0.9"
 
 [dev-dependencies]
 failure = "0.1.5"
-
-[dev-dependencies.autorand]
-version = "0.2.2"
-features = ["json", "json-value-always-null", "limited-integers"]
+tokio = {version = "1", features = ["full"]}
