@@ -11,13 +11,13 @@ pub enum Error {
     #[error("unexpected or invalid number {0}")]
     Number(String),
     #[error("error code {1} from node: {0}")]
-    NodeError(String, isize),
+    ApiError(String, isize),
     #[error("error deserializing JSON response")]
     JsonDeserialization(#[from] serde_json::Error),
     #[error("error deserializing transaction of type {r#type} and hash {hash}")]
     TransactionProcessing { r#type: String, hash: String },
     #[error("node response with no error but no result")]
-    NodeResponseNoResult,
+    ApiResponseNoResult,
     #[error("invalid transaction")]
     TxnInvalid(String),
 }
@@ -35,3 +35,23 @@ impl Error {
         Self::Number(value.to_string())
     }
 }
+
+// fn handler(e: reqwest::Error) {
+// 	if e.is_http() {
+// 		match e.url() {
+// 			None => println!("No Url given"),
+// 			Some(url) => println!("Problem making request to: {}", url),
+// 		}
+// 	}
+// 	// Inspect the internal error and output it
+// 	if e.is_serialization() {
+// 		let serde_error = match e.get_ref() {
+// 			None => return,
+// 			Some(err) => err,
+// 		};
+// 		println!("problem parsing information {}", serde_error);
+// 	}
+// 	if e.is_redirect() {
+// 		println!("server redirecting too many times or making loop");
+// 	}
+// }
