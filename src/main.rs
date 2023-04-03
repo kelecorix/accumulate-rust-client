@@ -1,25 +1,31 @@
 use accumulate_api::*;
 use tokio::test;
 extern crate reqwest;
+use types::*;
 
 #[tokio::main]
 async fn main() {
 	env_logger::init();
-	let v = get_last_major_block().await;
-	//println!("{}", v);
+	let ov = get_last_major_block().await;
+	match ov {
+		None => println!("no result"),
+		Some(v) => println!("{:?}", v),
+	}
 }
 
-async fn get_last_major_block() {
+async fn get_last_major_block() -> Option<MajorBlocksRangeResponse> {
 	let client = Client::new_with_version(ACCUMULATE_MAINNET_RPC_URL.to_string(), 3);
 	let resp = blocks::get_range(&client, "acc://bvn-Apollo.acme", 1, 100, true).await;
 
 	match resp {
-		Err(e) => println!("{}", e),
-		Ok(_) => return,
+		Err(e) => {
+			println!("{}", e);
+			return None;
+		}
+		Ok(r) => return Some(r),
+		Ok(_) | Err(_) => {
+			println!("error");
+			return None;
+		}
 	}
-
-	// if let Err(e) = resp {
-	//     println!("{}", e);
-	//     handler(e);
-	// }
 }
