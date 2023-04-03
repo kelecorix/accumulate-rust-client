@@ -20,8 +20,15 @@ pub async fn get_range(
 	start: u64,
 	count: u64,
 	expand: bool,
+	from_end: bool,
 ) -> Result<MajorBlocksRangeResponse> {
-	let json = json!(ApiCall::query_major_blocks(scope.to_string(), start, count, expand));
+	let json = json!(ApiCall::query_major_blocks(
+		scope.to_string(),
+		start,
+		count,
+		expand,
+		from_end
+	));
 	println!("{}", json);
 
 	let url_path = &("/v".to_string() + client.version.to_string().as_str());
