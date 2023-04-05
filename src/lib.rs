@@ -187,14 +187,19 @@ impl ApiCall {
 		}
 	}
 
-	pub(crate) fn query_major_blocks(url: String, start: u64, count: u64, expand: bool) -> Self {
+	pub(crate) fn query_major_blocks(url: String, start: u64, count: u64, expand: bool, from_end: bool) -> Self {
 		Self::new(Method::MajorBlocksGet {
 			params: QueryBlockListParams {
 				scope: url,
 				query: {
 					BlockListParams {
 						query_type: "block".to_string(),
-						major_range: BlockListRangeParams { start, count, expand },
+						major_range: BlockListRangeParams {
+							start,
+							count,
+							expand,
+							from_end,
+						},
 					}
 				},
 			},
@@ -238,6 +243,8 @@ struct BlockListRangeParams {
 	start: u64,
 	count: u64,
 	expand: bool,
+	#[serde(rename(serialize = "fromEnd"))]
+	from_end: bool,
 }
 
 #[cfg(test)]
