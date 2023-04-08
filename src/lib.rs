@@ -159,13 +159,15 @@ enum Method {
 	#[serde(rename(serialize = "find-service"))]
 	FindService,
 	#[serde(rename(serialize = "query"))]
-	MajorBlocksGet { params: QueryBlockListParams },
+	MajorBlocksGet { params: QueryBlockMajorListParams },
 	#[serde(rename(serialize = "query"))]
-	MinorBlocksGet { params: BlockListParams },
+	MinorBlocksGet { params: QueryBlockMinorListParams },
+
 	#[serde(rename(serialize = "query"))]
 	MajorBlockGet { params: BlockParams },
 	#[serde(rename(serialize = "query"))]
 	MinorBlockGet { params: BlockParams },
+
 	#[serde(rename(serialize = "query"))]
 	Query { params: QueryParams },
 }
@@ -189,10 +191,10 @@ impl ApiCall {
 
 	pub(crate) fn query_major_blocks(url: String, start: u64, count: u64, expand: bool, from_end: bool) -> Self {
 		Self::new(Method::MajorBlocksGet {
-			params: QueryBlockListParams {
+			params: QueryBlockMajorListParams {
 				scope: url,
 				query: {
-					BlockListParams {
+					BlockMajorListParams {
 						query_type: "block".to_string(),
 						major_range: BlockListRangeParams {
 							start,
@@ -211,6 +213,25 @@ impl ApiCall {
 			params: BlockParams { scope: url, height },
 		})
 	}
+
+	pub(crate) fn query_minor_blocks(url: String, start: u64, count: u64, expand: bool, from_end: bool) -> Self {
+		Self::new(Method::MinorBlocksGet {
+			params: QueryBlockMinorListParams {
+				scope: url,
+				query: {
+					BlockMinorListParams {
+						query_type: "block".to_string(),
+						major_range: BlockListRangeParams {
+							start,
+							count,
+							expand,
+							from_end,
+						},
+					}
+				},
+			},
+		})
+	}
 }
 
 #[derive(Clone, Deserialize, Debug, Serialize)]
@@ -225,13 +246,13 @@ struct BlockParams {
 }
 
 #[derive(Clone, Deserialize, Debug, Serialize)]
-struct QueryBlockListParams {
+struct QueryBlockMajorListParams {
 	scope: String,
-	query: BlockListParams,
+	query: BlockMajorListParams,
 }
 
 #[derive(Clone, Deserialize, Debug, Serialize)]
-struct BlockListParams {
+struct BlockMajorListParams {
 	#[serde(rename(serialize = "queryType"))]
 	query_type: String,
 	#[serde(rename(serialize = "majorRange"))]
@@ -245,6 +266,20 @@ struct BlockListRangeParams {
 	expand: bool,
 	#[serde(rename(serialize = "fromEnd"))]
 	from_end: bool,
+}
+
+#[derive(Clone, Deserialize, Debug, Serialize)]
+struct QueryBlockMinorListParams {
+	scope: String,
+	query: BlockMinorListParams,
+}
+
+#[derive(Clone, Deserialize, Debug, Serialize)]
+struct BlockMinorListParams {
+	#[serde(rename(serialize = "queryType"))]
+	query_type: String,
+	#[serde(rename(serialize = "minorRange"))]
+	major_range: BlockListRangeParams,
 }
 
 #[cfg(test)]
